@@ -26,12 +26,6 @@ services:
     volumes:
       - ./mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    restart: always
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -ppass2023"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
 
   frontend:
     build:
@@ -55,9 +49,8 @@ services:
     volumes:
       - ./log:/app/log
     depends_on:
-      bancoMysql:
-        condition: service_healthy
-    command: sh -c 'while ! mysqladmin ping -h bancoMysql -u root -ppass2023 --silent; do sleep 1; done; npm start'
+      - bancoMysql
+    restart: always
 
 networks:
   rede_projeto:
