@@ -50,7 +50,9 @@ services:
     volumes:
       - ./log:/app/log
     depends_on:
-      - bancoMysql
+      bancoMysql:
+        condition: service_healthy
+    command: sh -c 'until nc -z bancoMysql 3306; do sleep 1; done; npm start'
 
 networks:
   rede_projeto:
