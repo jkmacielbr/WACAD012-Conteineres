@@ -1,4 +1,3 @@
-
 USE livraria;
 
 CREATE TABLE IF NOT EXISTS livros (
