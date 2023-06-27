@@ -22,6 +22,7 @@ services:
       - rede_projeto
     environment:
       - MYSQL_ROOT_PASSWORD=pass2023
+      - MYSQL_DATABASE=livraria
     volumes:
       - ./mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
