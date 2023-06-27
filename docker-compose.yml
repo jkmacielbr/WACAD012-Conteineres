@@ -27,6 +27,11 @@ services:
       - ./mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -ppass2023"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   frontend:
     build:
