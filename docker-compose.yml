@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpMyAdmin
+    environment:
+      - PMA_HOST=bancoMysql
+      - PMA_USER=root
+      - PMA_PASSWORD=pass2023
+    networks:
+      - rede_projeto
+    ports:
+      - 8080:80
+
+  bancoMysql:
+    image: mysql
+    container_name: bancoMysql
+    ports:
+      - 3307:3306
+    networks:
+      - rede_projeto
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass2023
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  frontend:
+    build:
+      context: ./webacademy-livros-frontend/
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - 8000:80
+    networks:
+      - rede_projeto
+
+  backend:
+    build:
+      context: ./webacademy-livros-backend/
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - 4444:4444
+    networks:
+      - rede_projeto
+    volumes:
+      - ./log:/app/log
+    depends_on:
+      - bancoMysql
+
+networks:
+  rede_projeto:
+
