@@ -52,7 +52,7 @@ services:
     depends_on:
       bancoMysql:
         condition: service_healthy
-    command: sh -c 'until nc -z bancoMysql 3306; do sleep 1; done; npm start'
+    command: sh -c 'while ! mysqladmin ping -h bancoMysql -u root -ppass2023 --silent; do sleep 1; done; npm start'
 
 networks:
   rede_projeto:
